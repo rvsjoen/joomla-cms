@@ -8,7 +8,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-// Include dependancies.
+// Include dependencies.
 jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -131,7 +131,7 @@ class MenusModelItem extends JModelAdmin
 					return false;
 				}
 			}
-			else if ($cmd == 'm' && !$this->batchMove($commands['menu_id'], $pks))
+			elseif ($cmd == 'm' && !$this->batchMove($commands['menu_id'], $pks))
 			{
 				return false;
 			}
@@ -511,12 +511,12 @@ class MenusModelItem extends JModelAdmin
 		// Modify the form based on access controls.
 		if (!$this->canEditState((object) $data)) {
 			// Disable fields for display.
-			$form->setFieldAttribute('ordering', 'disabled', 'true');
+			$form->setFieldAttribute('menuordering', 'disabled', 'true');
 			$form->setFieldAttribute('published', 'disabled', 'true');
 
 			// Disable fields while saving.
 			// The controller has already verified this is an article you can edit.
-			$form->setFieldAttribute('ordering', 'filter', 'unset');
+			$form->setFieldAttribute('menuordering', 'filter', 'unset');
 			$form->setFieldAttribute('published', 'filter', 'unset');
 		}
 
@@ -680,6 +680,7 @@ class MenusModelItem extends JModelAdmin
 				$result->associations = array();
 			}
 		}
+		$result->menuordering = $pk;
 
 		return $result;
 	}
@@ -1042,10 +1043,42 @@ class MenusModelItem extends JModelAdmin
 			$table->load($pk);
 			$isNew = false;
 		}
+		if (!$isNew && $table->menutype == $data['menutype']) {
+			if ($table->parent_id == $data['parent_id'] ) {
 
-		// Set the new parent id if parent id not matched OR while New/Save as Copy .
-		if ($table->parent_id != $data['parent_id'] || $data['id'] == 0) {
+				// If first is chosen make the item the first child of the selected parent.
+				if ($data['menuordering'] == -1) {
+					$table->setLocation($data['parent_id'], 'first-child');
+				}
+				// If last is chosen make it the last child of the selected parent.
+				elseif ($data['menuordering'] == -2) {
+					$table->setLocation($data['parent_id'], 'last-child');
+				}
+				// Don't try to put an item after itself. All other ones put after the selected item.
+				elseif ($data['menuordering'] && ($table->id != $data['menuordering']))
+				{
+					$table->setLocation($data['menuordering'], 'after');
+				}
+				// Just leave it where it is if no change is made.
+				elseif ( $data['menuordering'] && ($table->id ==  $data['menuordering']))
+				{
+					unset( $data['menuordering']);
+				}
+			}
+			// Set the new parent id if parent id not matched and put in last position
+			else {
+				$table->setLocation($data['parent_id'],'last-child');
+
+			}
+		}
+		// We have a new item, so it is not a change.
+		elseif ($isNew) {
 			$table->setLocation($data['parent_id'], 'last-child');
+		}
+		// The menu type has changed so we need to just put this at the bottom
+		// of the root level.
+		else  {
+			$table->setLocation(1, 'last-child');
 		}
 
 		// Bind the data.
@@ -1215,12 +1248,12 @@ class MenusModelItem extends JModelAdmin
 							unset($pks[$i]);
 							JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
 						}
-						else if (!$table->check()) {
+						elseif (!$table->check()) {
 							// Prune the items that failed pre-save checks.
 							unset($pks[$i]);
 							JError::raiseWarning(403, $table->getError());
 						}
-						else if (!$table->store()) {
+						elseif (!$table->store()) {
 							// Prune the items that could not be stored.
 							unset($pks[$i]);
 							JError::raiseWarning(403, $table->getError());

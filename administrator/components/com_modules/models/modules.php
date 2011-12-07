@@ -181,9 +181,9 @@ class ModulesModelModules extends JModelList
 			$item->name = JText::_($item->name);
 			if (is_null($item->pages)) {
 				$item->pages = JText::_('JNONE');
-			} else if ($item->pages < 0) {
+			} elseif ($item->pages < 0) {
 				$item->pages = JText::_('COM_MODULES_ASSIGNED_VARIES_EXCEPT');
-			} else if ($item->pages > 0) {
+			} elseif ($item->pages > 0) {
 				$item->pages = JText::_('COM_MODULES_ASSIGNED_VARIES_ONLY');
 			} else {
 				$item->pages = JText::_('JALL');
@@ -207,7 +207,7 @@ class ModulesModelModules extends JModelList
 			$this->getState(
 				'list.select',
 				'a.id, a.title, a.note, a.position, a.module, a.language,' .
-				'a.checked_out, a.checked_out_time, a.published, a.access, a.ordering, a.publish_up, a.publish_down'
+				'a.checked_out, a.checked_out_time, a.published+2*(e.enabled-1) as published, a.access, a.ordering, a.publish_up, a.publish_down'
 			)
 		);
 		$query->from('`#__modules` AS a');
@@ -244,7 +244,7 @@ class ModulesModelModules extends JModelList
 		if (is_numeric($state)) {
 			$query->where('a.published = '.(int) $state);
 		}
-		else if ($state === '') {
+		elseif ($state === '') {
 			$query->where('(a.published IN (0, 1))');
 		}
 
@@ -254,10 +254,10 @@ class ModulesModelModules extends JModelList
 			$query->where('a.position = '.$db->Quote($position));
 		}
 
-		else if ($position == 'none') {
+		elseif ($position == 'none') {
 			$query->where('a.position = '.$db->Quote(''));
 		}
-		
+
 		// Filter by module
 		$module = $this->getState('filter.module');
 		if ($module) {

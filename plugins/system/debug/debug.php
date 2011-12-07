@@ -8,8 +8,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Joomla! Debug plugin
  *
@@ -84,10 +82,10 @@ class plgSystemDebug extends JPlugin
 		}
 
 		// If the user is not allowed to view the output then end here
-		$filterGroups = (array) $this->params->get('filter_groups', null);
+		$filterGroups = $this->params->get('filter_groups', null);
 		if (!empty($filterGroups)) {
 			$userGroups = JFactory::getUser()->get('groups');
-			if (!array_intersect($filterGroups, array_keys($userGroups))) {
+			if (!array_intersect($filterGroups, $userGroups)) {
 				echo $contents;
 				return;
 			}
@@ -268,7 +266,7 @@ class plgSystemDebug extends JPlugin
 
 					foreach ($orphans as $key => $occurance)
 					{
-						if (is_array($occurance) AND isset($occurance[0])) {
+						if (is_array($occurance) and isset($occurance[0])) {
 							$info = &$occurance[0];
 							$file = @$info['file'];
 

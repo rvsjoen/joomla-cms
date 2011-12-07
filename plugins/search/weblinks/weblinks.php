@@ -8,8 +8,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.plugin.plugin');
-
 require_once JPATH_SITE.'/components/com_weblinks/helpers/route.php';
 
 /**
@@ -168,7 +166,7 @@ class plgSearchWeblinks extends JPlugin
 					$rows[$key]->href = WeblinksHelperRoute::getWeblinkRoute($row->slug, $row->catslug);
 				}
 
-				foreach($rows AS $key => $weblink) {
+				foreach($rows as $key => $weblink) {
 					if (searchHelper::checkNoHTML($weblink, $searchText, array('url', 'text', 'title'))) {
 						$return[] = $weblink;
 					}

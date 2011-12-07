@@ -23,13 +23,13 @@ class JMenuSite extends JMenu
 	 * @return array
 	 */
 	public function load()
-	{	
+	{
 		// Initialise variables.
 		$db		= JFactory::getDbo();
 		$app	= JFactory::getApplication();
 		$query	= $db->getQuery(true);
 
-		$query->select('m.id, m.menutype, m.title, m.alias, m.path AS route, m.link, m.type, m.level, m.language');
+		$query->select('m.id, m.menutype, m.title, m.alias, m.note, m.path AS route, m.link, m.type, m.level, m.language');
 		$query->select('m.browserNav, m.access, m.params, m.home, m.img, m.template_style_id, m.component_id, m.parent_id');
 		$query->select('e.element as component');
 		$query->from('#__menu AS m');
@@ -64,7 +64,7 @@ class JMenuSite extends JMenu
 			parse_str($url, $item->query);
 		}
 	}
-	
+
 	/**
 	 * Gets menu items by attribute
 	 *
@@ -79,7 +79,7 @@ class JMenuSite extends JMenu
 		$attributes = (array) $attributes;
 		$values 	= (array) $values;
 		$app		= JFactory::getApplication();
-		
+
 		if ($app->isSite())
 		{
 			// Filter by language if not set
@@ -109,7 +109,7 @@ class JMenuSite extends JMenu
 				unset($values[$key]);
 			}
 		}
-		
+
 		return parent::getItems($attributes, $values, $firstonly);
 	}
 
@@ -126,7 +126,7 @@ class JMenuSite extends JMenu
 		if (array_key_exists($language, $this->_default) && JFactory::getApplication()->getLanguageFilter()) {
 			return $this->_items[$this->_default[$language]];
 		}
-		else if (array_key_exists('*', $this->_default)) {
+		elseif (array_key_exists('*', $this->_default)) {
 			return $this->_items[$this->_default['*']];
 		}
 		else {

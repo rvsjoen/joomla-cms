@@ -27,13 +27,164 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+04-Dec-2011 Christophe Demko
+ # [#27286] plg_profile: Missing server side validation  (Nikolai Plath)
+ # [#27288] Pagination and page navigation in default templates can look broken in front end. (Jennifer Marriott)
+
+04-Dec-2011 Jean-Marie Simonet
+ #[#27287] com_users fail to redirect properly on login failure. Thanks Nicolai.
+
+03-Dec-2011 Mark Dexter
+ ^ [#26134] Menu item parameter "Note"
+ ^ [#27144] No "new user notification" email sent to admin
+ ^ [#27229] *Implementing default text per language in syndicate module
+
+03-Dec-2011 Jean-Marie Simonet
+ # [#27196] Unable to add a trashed Content Language again. Thanks Michael
+
+03-Dec-2011 Christophe Demko
+ # [#27255] Fix some E_STRICT warnings
+ # [#26778] Update TinyMCE to 3.4.7
+
+02-Dec-2011 Christophe Demko
+ ^ Changing file modes
+ # [#27248] Default Beez templates hard coded paths
+ - [#27252] Remove calls to import() that are now handled by the platform
+
+30-Nov-2011 Jean-Marie Simonet
+ # [#27258] Wrong # cols in tfoot of Installer view from com_languages. Thanks Denise
+ $ Adding new strings from en-GB.jhtmldate.ini to en-GB.lib_joomla.ini
+
+28-Nov-2011 Christophe Demko
+ # [#25291] Front end clear link for media field and file field closes form
+ # [#27141] Adding the possibility to automatically load (un)compressed css and js file whether debug in on or off
+ # [#25643] JComponentHelper::renderComponent assumes $app variable unchanged
+ # [#24919] JHtml::_('grid.boolean', $i, $value) should add void(0) if not given a task
+ # [#27102] Collection updater not working in Joomla! 1.7
+ # [#24796] Error removing styles in uninstall function
+ # [#27201] More syncing with platform 11.3
+ # [#26805] Update MooTools to version 1.4 and SqueezeBox to 1.3
+ # [#27197] Backport the autoloader from the platform
+ # [#26493] Class 'JRequest' not found in session.php
+ # [#27184] Fatal error: Call to undefined method JDocumentFeed::getHeadData() in /home/content/53/8127853/html/libraries/joomla/cache/cache.php
+ # [#26508] Wrong default format in JParameter->bind()
+ # [#25957] wrong behaviour of libraries/joomla/application/module/JModuleHelper:moduleCache()
+ # [#26612] Contacts Component sets Reply-To incorrectly in 1.7
+ # [#26643] Profile Plugin is not allowing different settings for register and profile
+ # [#26816] Extension manager - modules status
+ # [#26731] Broken module chrome when using 'New window without navigation'
+ # [#27212] Test CMS migration for platform 11.3
+
+26-Nov-2011 Jean-Marie Simonet
+ # [#27241] *Some search plugins do not query for the created date
+ # [#27131] Adding 'Last' in menu item ordering. Thanks Elin
+
+23-Nov-2011 Christophe Demko
+ - [#27228] Remove the prefix check in the installation since it's buggy
+ $ [#27233] Language String Changes for Consistency
+ ^ [#27206] Wrong length of #__newsfeeds alias column in joomla.sql
+ ^ [#27231] Authentication plugins use deprecated features of joomla platform
+
+19-Nov-2011 Christophe Demko
+ # [#27118] *Login Module redirects issue with multilanguage
+
+18-Nov-2011 Christophe Demko
+ # [#27190] When Global Cache enabled, sub menus don't expand
+
+17-Nov-2011 Christophe Demko
+ ^ Rename libraries/joomlacms by libraries/cms
+ # [#27163] Inaccurate language string for empty Introtext (Denise McLaurin)
+
+17-Nov-2011 Jean-Marie Simonet
+ # [#26821] Plug-in Manager problem mixing pagination and filter. Thanks Prasit.
+ # [#27189] Spelling mistake in com_menu, function name incorrect. Thanks Ryan.
+ + Adding Syriac flag sy.gif to mod_languages. Thanks Pauls.
+
+15-Nov-2011 Jean-Marie Simonet
+ $ Correcting typo in ini file
+
+14-Nov-2011 Jean-Marie Simonet
+ Remove install checks
+
+-------------------- 1.7.3 Stable Release [14-Nov-2011] ------------------
+
+12-Nov-2011 Mark Dexter
+ # Revert [#26805] because it breaks modal close behavior in front end (issue 27149)
+
+11-Nov-2011 Jean-Marie Simonet
+ # [#26993] Weblinks entries do not delete correctly and display in the weblinks view. Thanks Denise.
+
+10-Nov-2011 Christophe Demko
+ #- [#27119] Remove unused title_alias column
+
+09-Nov-2011 Mark Dexter
+ # [#26439] Editors have problems with quotes in content plugins syntax
+
+09-Nov-2011 Christophe Demko
+ # [#27129] *Patch #26980 breaks menu item saving
+ # [#26805] Update MooTools to version 1.4.1
+ # [#27128] *Validation error in mod_languages (Jean-Marie Simonet)
+
+09-Nov-2011 Jean-Marie Simonet
+ # [#26830] xreference in 1.6+ is inconsistent with 1.5.  Thanks Elin and Andrea
+ # [#27129] *Patch #26980 breaks menu item saving. Thanks Christophe.
+
+08-Nov-2011 Mark Dexter
+ # [#27127] Merge more from the platform (images)
+
+08-Nov-2011 Jean-Marie Simonet
+ #$ [#26980] Missing menu ordering in edit. Thanks Christophe and Elin.
+ #$ [#25037] No option to remove the default language from the URL and links. Thanks Christophe.
+ # [#26979] *Ordering when editing in front-end
+ 
+07-Nov-2011 Jean-Marie Simonet
+ #$ [#27007] *mod_articles_category missing option to sort by feature articles ordering system. Thanks Denise.
+ $ [#24697] Tooltip partly matches the related options in Latest News module
+
+07-Nov-2011 Christophe Demko
+ + [#26940] Allow ability to upload file (eg: profile picture) through com_users profile (CY Lee)
+
+07-Nov-2011 Mark Dexter
+ # [#26927] upgrade from 1.6.3 and 1.6.4 to 1.7.2
+ # [#27090] Use elseif instead of else if (for platform files)
+ # [#26226] page break broke when 'Table of Contents' set to Hide
+ # [#27115] Use lowercase token
+
+06-Nov-2011 Jean-Marie Simonet
+ # [#26840] manifest_cache entry not generated for file packages on install. Thanks Michael
+ # [#27108] *Fatal Error in multilangstatus module when languagefilter plugin disabled
+ # [#26883] Start syncing to platform version 11.3 (media/system $id part)
+
+04-Nov-2011 Jean-Marie Simonet
+ # [#27075] Make sure there is a blank line at the end of every PHP file. Thanks Rouven
+ 
+04-Nov-2011 Christophe Demko
+ # [#27038] Apply the patch to fix the MySQL specific queries - com_installer (Sudhi Seshachala)
+
+02-Nov-2011 Christophe Demko
+ # [#27023] Component updates not working in Joomla! 1.7.0 and later (Nicholas Dionysopoulos)
+ - Remove module menu entry (missing in [#27072])
+ - [#27072] Books module when installing without sample data (Rune Sjøen)
+
+01-Nov-2011 Jean-Marie Simonet
+ # [#26608] Save as copy template style. Thanks Christophe
+ # [#26959] Can't mass mail to SA group. Thanks Christophe
+ # [#27056] System - Debug Not Allowed Any Groups to View when selected
+ + Adding Taiwan and Hong-Kong flags to mod_languages. Thanks Eddy.
+
+31-Oct-2011 Christophe Demko
+ # [#27061] Beez5 have image path link to beez_20
+
+28-Oct-2011 Jean-Marie Simonet
+ # [#27029] *Adding column language tag in Language Manager Installed languages
+
 26-Oct-2011 Jean-Marie Simonet
  # [#27018] The Table in the Category List Layout Could Sort ONLY by Created Date Irrespective of What is Selected for Show Date
 
 25-Oct-2011 Jean-Marie Simonet
  + [#26995] *Adding to the multilanguage status module a check for contacts assigned languages. Thanks Christophe.
  #$ [#26988] Incongruous Language Implementation in Article List Header
- $  [#27019] Change Modified date to Modified Date for Consistency in en-GB.com_content.ini in the Front End. Thanks Mig.
+ $ [#27019] Change Modified date to Modified Date for Consistency in en-GB.com_content.ini in the Front End. Thanks Mig.
 
 24-Oct-2011 Jean-Marie Simonet
  # [#27010] Show or hide the menu title does not exist for the type of menu alias

@@ -180,7 +180,7 @@ CREATE TABLE `#__categories` (
   `checked_out` int(11) unsigned NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `access` integer unsigned NOT NULL default '0',
-  `params` TEXT NOT NULL, 
+  `params` TEXT NOT NULL,
   `metadesc` varchar(1024) NOT NULL COMMENT 'The meta description for the page.',
   `metakey` varchar(1024) NOT NULL COMMENT 'The meta keywords for the page.',
   `metadata` varchar(2048) NOT NULL COMMENT 'JSON encoded metadata properties.',
@@ -279,7 +279,7 @@ CREATE TABLE `#__content` (
   `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.',
   `title` varchar(255) NOT NULL default '',
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL default '',
-  `title_alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL default '',
+  `title_alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL default '' COMMENT 'Deprecated in Joomla! 3.0',
   `introtext` mediumtext NOT NULL,
   `fulltext` mediumtext NOT NULL,
   `state` tinyint(3) NOT NULL default '0',
@@ -519,7 +519,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (601, 'English (United Kingdom)', 'language', 'en-GB', '', 1, 1, 1, 1, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
-(700, 'Joomla! CMS', 'file', 'joomla', '', 0, 1, 1, 1, '{"legacy":false,"name":"files_joomla","type":"file","creationDate":"September 2011","author":"Joomla!","copyright":"(C) 2005 - 2011 Open Source Matters. All rights reserved","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"1.7.1","description":"FILES_JOOMLA_XML_DESCRIPTION","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+(700, 'Joomla! CMS', 'file', 'joomla', '', 0, 1, 1, 1, '{"legacy":false,"name":"files_joomla","type":"file","creationDate":"November 2011","author":"Joomla!","copyright":"(C) 2005 - 2011 Open Source Matters. All rights reserved","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"1.7.3","description":"FILES_JOOMLA_XML_DESCRIPTION","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 (800, 'joomla', 'package', 'pkg_joomla', '', 0, 1, 1, 1, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
@@ -545,6 +545,8 @@ CREATE TABLE `#__languages` (
   `ordering` int(11) NOT NULL default '0',
   PRIMARY KEY  (`lang_id`),
   UNIQUE `idx_sef` (`sef`),
+  UNIQUE `idx_image` (`image`),
+  UNIQUE `idx_langcode` (`lang_code`),
   INDEX `idx_ordering` (`ordering`)
 )  DEFAULT CHARSET=utf8;
 
@@ -708,7 +710,6 @@ INSERT INTO `#__modules` VALUES
 (15, 'Title', '', '', 1, 'title', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_title', 3, 1, '', 1, '*'),
 (16, 'Login Form', '', '', 7, 'position-7', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_login', 1, 1, '{"greeting":"1","name":"0"}', 0, '*'),
 (17, 'Breadcrumbs', '', '', 1, 'position-2', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_breadcrumbs', 1, 1, '{"moduleclass_sfx":"","showHome":"1","homeText":"Home","showComponent":"1","separator":"","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
-(18, 'Book Store', '', '', 1, 'position-10', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_banners', 1, 0, '{"target":"1","count":"1","cid":"3","catid":[""],"tag_search":"0","ordering":"0","header_text":"","footer_text":"Books!","layout":"_:default","moduleclass_sfx":"","cache":"1","cache_time":"900"}', 0, '*'),
 (79, 'Multilanguage status', '', '', 1, 'status', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 'mod_multilangstatus', 3, 1, '{"layout":"_:default","moduleclass_sfx":"","cache":"0"}', 1, '*');
 
 # -------------------------------------------------------
@@ -743,7 +744,6 @@ INSERT INTO `#__modules_menu` VALUES
 (15,0),
 (16,0),
 (17,0),
-(18,0),
 (79,0);
 
 # -------------------------------------------------------
@@ -756,7 +756,7 @@ CREATE TABLE `#__newsfeeds` (
   `catid` integer NOT NULL default '0',
   `id` integer(10) UNSIGNED NOT NULL auto_increment,
   `name`  varchar(100) NOT NULL DEFAULT '',
-  `alias` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL default '',
+  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL default '',
   `link` varchar(200) NOT NULL DEFAULT '',
   `filename` varchar(200) default NULL,
   `published` tinyint(1) NOT NULL default '0',

@@ -66,7 +66,6 @@ class UsersModelRegistration extends JModelForm
 		if (($userParams->get('useractivation') == 2) && !$user->getParam('activate', 0))
 		{
 			$uri = JURI::getInstance();
-			jimport('joomla.user.helper');
 
 			// Compile the admin notification mail values.
 			$data = $user->getProperties();
@@ -116,13 +115,12 @@ class UsersModelRegistration extends JModelForm
 		}
 
 		//Admin activation is on and admin is activating the account
-		else if (($userParams->get('useractivation') == 2) && $user->getParam('activate', 0))
+		elseif (($userParams->get('useractivation') == 2) && $user->getParam('activate', 0))
 		{
 			$user->set('activation', '');
 			$user->set('block', '0');
 
 			$uri = JURI::getInstance();
-			jimport('joomla.user.helper');
 
 			// Compile the user activated notification mail values.
 			$data = $user->getProperties();
@@ -263,9 +261,9 @@ class UsersModelRegistration extends JModelForm
 	protected function preprocessForm(JForm $form, $data, $group = 'user')
 	{
 		$userParams	= JComponentHelper::getParams('com_users');
-		
+
 		//Add the choice for site language at registration time
-		if ($userParams->get('site_language') == 1 && $userParams->get('frontend_userparams') == 1) 
+		if ($userParams->get('site_language') == 1 && $userParams->get('frontend_userparams') == 1)
 		{
 			$form->loadFile('sitelang',false);
 		}
@@ -299,6 +297,7 @@ class UsersModelRegistration extends JModelForm
 	public function register($temp)
 	{
 		$config = JFactory::getConfig();
+		$db		= $this->getDbo();
 		$params = JComponentHelper::getParams('com_users');
 
 		// Initialise the table with JUser.
@@ -317,7 +316,6 @@ class UsersModelRegistration extends JModelForm
 
 		// Check if the user needs to activate their account.
 		if (($useractivation == 1) || ($useractivation == 2)) {
-			jimport('joomla.user.helper');
 			$data['activation'] = JUtility::getHash(JUserHelper::genRandomPassword());
 			$data['block'] = 1;
 		}
@@ -368,7 +366,7 @@ class UsersModelRegistration extends JModelForm
 				$data['password_clear']
 			);
 		}
-		else if ($useractivation == 1)
+		elseif ($useractivation == 1)
 		{
 			// Set the link to activate the user account.
 			$uri = JURI::getInstance();
@@ -408,7 +406,42 @@ class UsersModelRegistration extends JModelForm
 
 		// Send the registration email.
 		$return = JUtility::sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
-
+		
+		//Send Notification mail to administrators
+		if (($params->get('useractivation') < 2) && ($params->get('mail_to_admin') == 1)) {
+			$emailSubject = JText::sprintf(
+				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
+				$data['name'],
+				$data['sitename']
+			);
+			
+			$emailBodyAdmin = JText::sprintf(
+				'COM_USERS_EMAIL_REGISTERED_NOTIFICATION_TO_ADMIN_BODY',
+				$data['name'],
+				$data['username'],
+				$data['siteurl']
+			);
+			
+			// get all admin users
+			$query = 'SELECT name, email, sendEmail' .
+					' FROM #__users' .
+					' WHERE sendEmail=1';
+			
+			$db->setQuery( $query );
+			$rows = $db->loadObjectList();
+			
+			// Send mail to all superadministrators id
+			foreach( $rows as $row )
+			{
+				$return = JUtility::sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBodyAdmin);
+			
+				// Check for an error.
+				if ($return !== true) {
+					$this->setError(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+					return false;
+				}
+			}
+		}
 		// Check for an error.
 		if ($return !== true) {
 			$this->setError(JText::_('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'));
@@ -440,7 +473,7 @@ class UsersModelRegistration extends JModelForm
 
 		if ($useractivation == 1)
 			return "useractivate";
-		else if ($useractivation == 2)
+		elseif ($useractivation == 2)
 			return "adminactivate";
 		else
 			return $user->id;
