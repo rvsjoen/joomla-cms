@@ -240,6 +240,7 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 		</field>
+
 		<field name="display_num" type="list"
 				default="10"
 				description="JGLOBAL_NUMBER_ITEMS_LIST_DESC"
@@ -253,6 +254,24 @@
 				<option value="50">J50</option>
 				<option value="100">J100</option>
 				<option value="0">JALL</option>
+		</field>
+
+		<field name="show_archived" type="list"
+				description="JGLOBAL_SHOW_ARCHIVED_ARTICLES_DESC"
+				label="GLOBAL_SHOW_ARCHIVED_ARTICLES_LABEL"
+		>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
+			
+		<field name="show_unpublished" type="list"
+				description="JGLOBAL_SHOW_UNPUBLISHED_ARTICLES_DESC"
+				label="GLOBAL_SHOW_UNPUBLISHED_ARTICLES_LABEL"
+		>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
 		</field>
 
 </fieldset>

@@ -141,7 +141,14 @@ class ContentModelCategory extends JModelList
 			$query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
 		}
 		else {
-			$this->setState('filter.published', array(0, 1, 2));
+			$states = array(1);
+			if ($params->get('show_archived')){
+				$states[] = 2;
+			}
+			if ($params->get('show_unpublished')){
+				$states[] = 0;
+			}
+			$this->setState('filter.published', $states);
 		}
 
 		// process show_noauth parameter

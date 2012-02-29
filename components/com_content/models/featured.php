@@ -56,7 +56,14 @@ class ContentModelFeatured extends ContentModelArticles
 			$this->setState('filter.published', 1);
 		}
 		else {
-			$this->setState('filter.published', array(0, 1, 2));
+			$states = array(1);
+			if ($params->get('show_archived')){
+				$states[] = 2;
+			}
+			if ($params->get('show_unpublished')){
+				$states[] = 0;
+			}
+			$this->setState('filter.published', $states);
 		}
 
 		// check for category selection
