@@ -84,7 +84,12 @@ abstract class JApplicationBase extends JObject
 	 */
 	public function registerEvent($event, $handler)
 	{
-		if ($this->dispatcher instanceof JDispatcher)
+		if(!$this)
+		{
+			$app = JFactory::getApplication();
+			$app->registerEvent($event, $handler);	
+			return $app;
+		} else if ($this->dispatcher instanceof JDispatcher)
 		{
 			$this->dispatcher->register($event, $handler);
 		}
