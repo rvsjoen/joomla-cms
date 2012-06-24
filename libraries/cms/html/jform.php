@@ -38,16 +38,46 @@ class JHtmlForm
 	public function render()
 	{
 		$html = array();
+        
+        $fieldsets = $this->form->getFieldsets();
+        foreach($fieldsets as $group => $fieldset) {
+            $html[] = $this->renderFieldSet($group, $fieldset);
+        }
+        
 		return implode("\n", $html);
 	}
 	
-	public function renderFieldSet($fieldset)
+	public function renderFieldSet($group, $fieldset)
 	{
-		
+		$html   = array();
+        $html[] = '<fieldset id="fieldset-'.$group.'">';
+        
+        if(isset($fieldset->label)) {
+            $html[] = '<legend>'.JText::_($fieldset->label).'</legend>';
+        }
+        
+        $fields = $this->form->getFieldset($group);
+        foreach($fields as $field) {
+            $html[] = $this->renderField($field);
+        }
+        
+        $html[] = '</fieldset>';
+
+        return implode("\n", $html);
 	}
 	
-	public function renderField($field)
+	public function renderField($field, $fieldset = null)
 	{
-		
+        $html   = array();
+        $html[] = '<div class="formelm">';
+        
+        if($fieldset && isset($fieldset->description) && trim($fieldset->description)) {
+            $html[] = '<p class="tip">'.JText::_($fieldSet->description).'</p>';
+        }
+        
+        $html[] = $field->label;
+        $html[] = $field->input;
+        $html[] = '</div>';
+        return implode("\n", $html);
 	}
 }

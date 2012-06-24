@@ -32,12 +32,20 @@ class JHtmlTable
 		JPluginHelper::importPlugin('html');
 
 		$results = $dispatcher->trigger('onHtmlTableBeforeRender', $this->data);
+        $options = $this->data['options'];
 
 		$html 	= array();
-		$html[]	= '<table style="'.$this->data['params']['style'].'">';
+		$html[]	= '<table ';
+        $html[] = (empty($options['id']) ? '' : (' id="' . $options['id'] . '"'));
+        $html[] = (empty($options['class']) ? '' : (' class="' . $options['class'] . '"'));
+        $html[] = (empty($options['style']) ? '' : (' style="' . $options['style'] . '"'));
+        $html[] = '>';
+        
+        // Render the individual table parts
 		$html[] = $this->renderHead();
 		$html[] = $this->renderBody();
 		$html[] = $this->renderFoot();
+        
 		$html[]	= '</table>';
 		$html	= implode("\n", $html);
 		
@@ -63,8 +71,10 @@ class JHtmlTable
 		$html 	= array();
 		$html[]	= '<tbody>';
 		
-		foreach($this->data['rows'] as $row) {
-			$html[]	= '<tr>';
+		foreach($this->data['rows'] as $i => $row) {
+			$html[]	= '<tr ';
+            $html[] = 'class="row'.($i % 2).'"';
+            $html[] = '>';
 			foreach($row as $col) {
 				$html[]	= '<td>'.$col.'</td>';
 			}
@@ -79,6 +89,11 @@ class JHtmlTable
 	{
 		$html 	= array();
 		$html[]	= '<tfoot>';
+        $html[] = '<td colspan="'.count($this->data['cols']).'">';
+        
+        // TODO Render pagination if exists
+        
+        $html[] = '</td>';
 		$html[]	= '</tfoot>';
 		return implode("\n", $html);
 	}
